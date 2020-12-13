@@ -3,8 +3,8 @@ package factory
 import (
 	"gotest/game/viewer"
 	"gotest/game/viewer/console"
-	"gotest/game/viewer/en"
-	"gotest/game/viewer/ru"
+	"gotest/game/viewer/console/en"
+	"gotest/game/viewer/console/ru"
 )
 
 type language string
@@ -15,7 +15,7 @@ const (
 )
 
 func NewByLanguage(lang language) viewer.Viewer {
-	var langData viewer.LanguageData
+	var langData console.LanguageData
 	switch lang {
 	case Ru:
 		langData = ru.Get()

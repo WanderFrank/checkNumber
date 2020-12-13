@@ -2,8 +2,7 @@ package app
 
 import (
 	"gotest/game"
-	"gotest/game/input"
-	"gotest/game/viewer"
+	"gotest/game/io"
 )
 
 type App interface {
@@ -12,11 +11,11 @@ type App interface {
 
 type app struct {
 	game   game.Game
-	viewer viewer.Viewer
-	input  input.InputProvider
+	viewer io.Viewer
+	input  io.InputProvider
 }
 
-func New(game game.Game, viewer viewer.Viewer, input input.InputProvider) *app {
+func New(game game.Game, viewer io.Viewer, input io.InputProvider) *app {
 	return &app{
 		game:   game,
 		viewer: viewer,
@@ -47,11 +46,11 @@ func (a *app) Run() {
 	}
 }
 
-func toViewCheckResult(value game.CheckResult) viewer.CheckResult {
-	toResultMap := map[game.CheckResult]viewer.CheckResult{
-		game.Equal: viewer.Equal,
-		game.More:  viewer.More,
-		game.Less:  viewer.Less,
+func toViewCheckResult(value game.CheckResult) io.CheckResult {
+	toResultMap := map[game.CheckResult]io.CheckResult{
+		game.Equal: io.Equal,
+		game.More:  io.More,
+		game.Less:  io.Less,
 	}
 
 	return toResultMap[value]

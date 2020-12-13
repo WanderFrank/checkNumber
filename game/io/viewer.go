@@ -1,4 +1,4 @@
-package viewer
+package io
 
 type Viewer interface {
 	PrintInputPrompt(currentCheckCount int)
@@ -15,10 +15,4 @@ const (
 	Less
 )
 
-type LanguageData struct {
-	Title       string
-	InputNumber string
-	Less        string
-	More        string
-	Equal       string
-}
+

@@ -5,11 +5,19 @@ import (
 	"gotest/game/viewer"
 )
 
-type consoleViewer struct {
-	langData viewer.LanguageData
+type LanguageData struct {
+	Title       string
+	InputNumber string
+	Less        string
+	More        string
+	Equal       string
 }
 
-func New(lang viewer.LanguageData) *consoleViewer {
+type consoleViewer struct {
+	langData LanguageData
+}
+
+func New(lang LanguageData) *consoleViewer {
 	return &consoleViewer{langData: lang}
 }
 
@@ -29,4 +37,11 @@ func (v *consoleViewer) PrintCheckResult(result viewer.CheckResult) {
 	} else if result == viewer.Equal {
 		fmt.Println(v.langData.Equal)
 	}
+}
+
+func (c *consoleViewer) GetNumber() int {
+	var number int
+	fmt.Scanf("%d\n", &number)
+
+	return number
 }
