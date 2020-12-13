@@ -2,13 +2,14 @@ package app
 
 import (
 	"gotest/game"
-	"gotest/game/io"
+	"gotest/io"
 	"fmt"
 )
 
 type App interface {
 	Run()
 }
+
 
 type app struct {
 	game   game.Game
