@@ -1,10 +1,10 @@
 package en
 
-import "gotest/game/viewer/console"
+import "gotest/app"
 
 // Get data
-func Get() console.LanguageData {
-	return console.LanguageData{
+func Get() app.LanguageData {
+	return app.LanguageData{
 		Title:       "Tell number!",
 		InputNumber: "Input number:",
 		Less:        "Less",

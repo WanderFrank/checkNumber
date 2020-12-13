@@ -1,7 +1,6 @@
 package telegram
 
 import (
-	"gotest/game/io"
 	"github.com/Syfaro/telegram-bot-api"
 	"log"
 	"strconv"
@@ -34,24 +33,7 @@ func New(token string, chatId int64) *telegramViewer {
 	}
 }
 
-func (v *telegramViewer) PrintInputPrompt(currentCheckCount int) {
-	v.sendMessage("Введите число")
-}
-
-func (v *telegramViewer) PrintTitle() {
-	v.sendMessage("Загадано число от 1 до 100. Угадай!")
-}
-func (v *telegramViewer) PrintCheckResult(result io.CheckResult) {
-	if result == io.Less {
-		v.sendMessage("Меньше")
-	} else if result == io.More {
-		v.sendMessage("Больше")
-	} else if result == io.Equal {
-		v.sendMessage("Угадали!")
-	}
-}
-
-func (v *telegramViewer) sendMessage(message string) {
+func (v *telegramViewer) Print(message string) {
 	msg := tgbotapi.NewMessage(v.chatId, message)
 	// и отправляем его
 	v.bot.Send(msg)

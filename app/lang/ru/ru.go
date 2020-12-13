@@ -1,9 +1,9 @@
 package ru
 
-import "gotest/game/viewer/console"
+import "gotest/app"
 
-func Get() console.LanguageData {
-	return console.LanguageData{
+func Get() app.LanguageData {
+	return app.LanguageData{
 		Title:       "Загадано число от 1 до 100. Угдай!",
 		InputNumber: "Введите число:",
 		Less:        "Загаданное число меньше",
