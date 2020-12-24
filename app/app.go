@@ -4,6 +4,7 @@ import (
 	"gotest/game"
 	"gotest/io"
 	"fmt"
+	"gotest/lang"
 )
 
 type App interface {
@@ -12,20 +13,14 @@ type App interface {
 
 
 type app struct {
-	game   game.Game
+	game  game.Game
 	transport io.Transport
-	langData LanguageData
+	langData lang.LanguageData
 }
 
-type LanguageData struct {
-	Title       string
-	InputNumber string
-	Less        string
-	More        string
-	Equal       string
-}
 
-func New(game game.Game, transport io.Transport, langData LanguageData) *app {
+
+func New(game game.Game, transport io.Transport, langData lang.LanguageData) *app {
 	return &app{
 		game:   game,
 		transport: transport,
