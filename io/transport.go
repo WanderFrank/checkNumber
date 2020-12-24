@@ -1,6 +1,6 @@
 package io
 
 type Transport interface {
-	Print(message string)
-	GetNumber() int
+	Print(message string) error
+	GetNumber() (int, error)
 }

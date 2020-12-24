@@ -3,7 +3,7 @@ package main
 import (
 	"gotest/app"
 	"gotest/game"
-	// "gotest/game/telegram"
+	// "gotest/io/telegram"
 	"gotest/lang"
 	"gotest/io/console"
 	"log"
@@ -27,7 +27,10 @@ func run() error {
 	}
 
 	app := app.New(g, t, langData)
-	app.Run()
+	err = app.Run()
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

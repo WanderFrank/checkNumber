@@ -11,13 +11,18 @@ func New() *consoleViewer {
 	return &consoleViewer{}
 }
 
-func (c *consoleViewer) Print(message string) {
-	fmt.Println(message)
+func (c *consoleViewer) Print(message string) error {
+	_, err := fmt.Println(message)
+
+	return err
 }
 
-func (c *consoleViewer) GetNumber() int {
+func (c *consoleViewer) GetNumber() (int, error) {
 	var number int
-	fmt.Scanf("%d\n", &number)
+	_, err := fmt.Scanf("%d\n", &number)
+	if err != nil {
+		return 0, err
+	}
 
-	return number
+	return number, nil
 }

@@ -12,10 +12,10 @@ type telegramViewer struct {
 	updatesChannel tgbotapi.UpdatesChannel
 }
 
-func New(token string, chatId int64) *telegramViewer {
+func New(token string, chatId int64) (*telegramViewer, error) {
 	bot, err := tgbotapi.NewBotAPI(token)
 	if err != nil {
-		log.Panic(err)
+		return nil, err
 	}
 
 	// инициализируем канал, куда будут прилетать обновления от API
@@ -23,27 +23,31 @@ func New(token string, chatId int64) *telegramViewer {
 	ucfg.Timeout = 60
 	updatesChannel, err := bot.GetUpdatesChan(ucfg)
 	if err != nil {
-		log.Panic(err)
+		return nil, err
 	}
 
 	return &telegramViewer{
 		bot: bot,
 		chatId: chatId,
 		updatesChannel: updatesChannel,
-	}
+	},
+	nil
 }
 
-func (v *telegramViewer) Print(message string) {
+func (v *telegramViewer) Print(message string) error {
 	msg := tgbotapi.NewMessage(v.chatId, message)
 	// и отправляем его
-	v.bot.Send(msg)
+	_, err := v.bot.Send(msg)
+
+	return err
+
 }
 
-func (i *telegramViewer) GetNumber() int {
+func (i *telegramViewer) GetNumber() (int, error) {
 	update := <- i.updatesChannel
 	text := update.Message.Text
 
-	number, _ := strconv.Atoi(text)
+	number, err := strconv.Atoi(text)
 
-	return number
+	return number, err
 }

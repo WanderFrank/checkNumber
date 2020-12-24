@@ -7,18 +7,11 @@ import (
 	"gotest/lang"
 )
 
-type App interface {
-	Run()
-}
-
-
 type app struct {
 	game  game.Game
 	transport io.Transport
 	langData lang.LanguageData
 }
-
-
 
 func New(game game.Game, transport io.Transport, langData lang.LanguageData) *app {
 	return &app{
@@ -28,27 +21,63 @@ func New(game game.Game, transport io.Transport, langData lang.LanguageData) *ap
 	}
 }
 
-func (a *app) Run() {
-	var inputChannel chan int = make(chan int)
-
-	a.transport.Print(a.langData.Title)
-
-	go func() {
-		for {
-			inputChannel <- a.transport.GetNumber()
+func (a *app) Run() (err error) {
+	defer func () {
+		if r := recover(); r != nil {
+			err = fmt.Errorf("%v", r)
 		}
 	}()
 
+	inputChannel := make(chan int)
+	inputErrorChannel := make(chan error)
+
+	defer close(inputChannel)
+	defer close(inputErrorChannel)
+	
+	go a.inputLoop(inputChannel, inputErrorChannel)
+
+	a.print(a.langData.Title)
+
 	for {
-		a.transport.Print(fmt.Sprintf("%d) "+a.langData.InputNumber, a.game.CheckCount()+1))
-		number := <-inputChannel
-		checkResult := a.game.Check(number)
+		a.print(fmt.Sprintf("%d) "+a.langData.InputNumber, a.game.CheckCount()+1))
 
-		a.printCheckResult(checkResult)
+		select {
+		case number := <- inputChannel:
+			checkResult := a.game.Check(number)
 
-		if checkResult == game.Equal {
-			break
+			a.printCheckResult(checkResult)
+
+			if checkResult == game.Equal {
+				break
+			}
+
+		case err := <- inputErrorChannel:
+			a.print(err.Error())
 		}
+
+		
+	}
+
+	return
+}
+
+func (a *app) print(text string) {
+	err := a.transport.Print(text)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func (a *app) inputLoop(resultChannel chan int, errorChannel chan error) {
+	for {
+		result, err := a.transport.GetNumber()
+		if err != nil {
+			
+			errorChannel <- err
+			continue
+		}
+
+		resultChannel <- result
 	}
 }
 
@@ -62,5 +91,5 @@ func (a *app) printCheckResult(result game.CheckResult) {
 		message = a.langData.Equal
 	}
 
-	a.transport.Print(message)
+	a.print(message)
 }
