@@ -1,28 +1,28 @@
 package app
 
 import (
+	"fmt"
 	"gotest/game"
 	"gotest/io"
-	"fmt"
 	"gotest/lang"
 )
 
 type app struct {
-	game  game.Game
+	game      game.Game
 	transport io.Transport
-	langData lang.LanguageData
+	langData  lang.LanguageData
 }
 
 func New(game game.Game, transport io.Transport, langData lang.LanguageData) *app {
 	return &app{
-		game:   game,
+		game:      game,
 		transport: transport,
 		langData:  langData,
 	}
 }
 
 func (a *app) Run() (err error) {
-	defer func () {
+	defer func() {
 		if r := recover(); r != nil {
 			err = fmt.Errorf("%v", r)
 		}
@@ -33,7 +33,7 @@ func (a *app) Run() (err error) {
 
 	defer close(inputChannel)
 	defer close(inputErrorChannel)
-	
+
 	go a.inputLoop(inputChannel, inputErrorChannel)
 
 	a.print(a.langData.Title)
@@ -42,7 +42,7 @@ func (a *app) Run() (err error) {
 		a.print(fmt.Sprintf("%d) "+a.langData.InputNumber, a.game.CheckCount()+1))
 
 		select {
-		case number := <- inputChannel:
+		case number := <-inputChannel:
 			checkResult := a.game.Check(number)
 
 			a.printCheckResult(checkResult)
@@ -51,11 +51,10 @@ func (a *app) Run() (err error) {
 				break
 			}
 
-		case err := <- inputErrorChannel:
+		case err := <-inputErrorChannel:
 			a.print(err.Error())
 		}
 
-		
 	}
 
 	return
@@ -72,7 +71,6 @@ func (a *app) inputLoop(resultChannel chan int, errorChannel chan error) {
 	for {
 		result, err := a.transport.GetNumber()
 		if err != nil {
-			
 			errorChannel <- err
 			continue
 		}

@@ -20,7 +20,6 @@ func LoadLangData(lang language) (LanguageData, error) {
 		return langData, err
 	}
 
-	
 	err = json.Unmarshal(file, &langData)
 
 	return langData, err

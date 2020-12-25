@@ -4,8 +4,8 @@ import (
 	"gotest/app"
 	"gotest/game"
 	// "gotest/io/telegram"
-	"gotest/lang"
 	"gotest/io/console"
+	"gotest/lang"
 	"log"
 )
 

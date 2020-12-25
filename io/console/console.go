@@ -4,8 +4,7 @@ import (
 	"fmt"
 )
 
-type consoleViewer struct {}
-
+type consoleViewer struct{}
 
 func New() *consoleViewer {
 	return &consoleViewer{}

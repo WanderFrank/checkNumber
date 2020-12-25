@@ -7,8 +7,8 @@ import (
 )
 
 type telegramViewer struct {
-	bot *tgbotapi.BotAPI
-	chatId int64
+	bot            *tgbotapi.BotAPI
+	chatId         int64
 	updatesChannel tgbotapi.UpdatesChannel
 }
 
@@ -27,11 +27,11 @@ func New(token string, chatId int64) (*telegramViewer, error) {
 	}
 
 	return &telegramViewer{
-		bot: bot,
-		chatId: chatId,
-		updatesChannel: updatesChannel,
-	},
-	nil
+			bot:            bot,
+			chatId:         chatId,
+			updatesChannel: updatesChannel,
+		},
+		nil
 }
 
 func (v *telegramViewer) Print(message string) error {
@@ -44,7 +44,7 @@ func (v *telegramViewer) Print(message string) error {
 }
 
 func (i *telegramViewer) GetNumber() (int, error) {
-	update := <- i.updatesChannel
+	update := <-i.updatesChannel
 	text := update.Message.Text
 
 	number, err := strconv.Atoi(text)
